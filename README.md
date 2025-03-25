@@ -35,6 +35,8 @@ GenVC: Self-Supervised Zero-Shot Voice Conversion
 ## Training
 
 ## Future updates
+☑️ **Multi-GPU Training**
+
 ☑️ **Causal Neural Vocoder**
 
 ☑️ **Multilingual VC**
