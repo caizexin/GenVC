@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.done-*
+logs/
+data/
+exp/
+pre_trained/GenVC*
+pre_trained/*_dvae.pth
+pre_trained/hifigan.pth
+pre_trained/gpt.pth
+pre_trained/contentVec.pt
+wandb/
+pymp-*/
+tmp*/
