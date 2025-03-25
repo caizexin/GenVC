@@ -13,6 +13,7 @@ GenVC: Self-Supervised Zero-Shot Voice Conversion
 </p>
 
 ---
+GenVC is an open-source, language model-based zero-shot voice conversion system that leverages self-supervised training and supports real-time and streaming voice conversion.
 
 <p align="center">
     <img src="figures/genVC.png" width="100%"/>
@@ -32,8 +33,34 @@ GenVC: Self-Supervised Zero-Shot Voice Conversion
 
 ## Inference
 
-## Training
+### Non-streaming inference
+```sh
+python infer.py --model_path pre_trained/GenVC_small.pth --src_wav samples/EF4_ENG_0112_1.wav --ref_audio samples/EM1_ENG_0037_1.wav --output_path samples/converted.wav
+```
+### Streaming inference
+```sh
+python infer.py --model_path pre_trained/GenVC_small.pth --src_wav samples/EF4_ENG_0112_1.wav --ref_audio samples/EM1_ENG_0037_1.wav --output_path samples/converted.wav --streaming
+```
+#### Latency and RTF
 
+#### Note
+
+## Training
+We strongly recommend using wandb.
+### Dataset
+
+```sh
+CUDA_VISIBLE_DEVICES=0 python train_audio_dvae.py
+```
+```sh
+CUDA_VISIBLE_DEVICES=0 python train_content_dvae.py
+```
+```sh
+CUDA_VISIBLE_DEVICES=0 python train_genVC.py
+```
+```sh
+CUDA_VISIBLE_DEVICES=0 python train_vocoder.py
+```
 ## Future updates
 ☑️ **Multi-GPU Training**
 
