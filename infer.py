@@ -11,7 +11,7 @@ if __name__ == '__main__':
     parser.add_argument('--src_wav', type=str, default='samples/EF4_ENG_0112_1.wav')
     parser.add_argument('--ref_audio', type=str, default='samples/EM1_ENG_0037_1.wav')
     parser.add_argument('--output_path', type=str, default='samples/converted.wav')
-    parser.add_argument('top_k', type=int, default=15)
+    parser.add_argument('--top_k', type=int, default=15)
     parser.add_argument('--streaming', action='store_true')
     args = parser.parse_args()
 
