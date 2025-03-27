@@ -119,4 +119,5 @@ parency, informed consent, and robust safeguards should be prioritized to preven
 - [Coqui-AI/Trainer](https://github.com/coqui-ai/Trainer) for the PyTorch model trainer
 - [Tortoise-TTS](https://github.com/neonbjb/tortoise-tts) and [XTTS](https://github.com/coqui-ai/TTS) for the LLM backbone
 - [Amphion](https://github.com/open-mmlab/Amphion) for providing some of the vocoder codes
+- My team members for their feedback, contributions, and support
 
