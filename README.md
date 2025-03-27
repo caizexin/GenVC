@@ -84,7 +84,7 @@ We highly recommend using Weights & Biases ([wandb](https://wandb.ai/site/)) to 
 Download the [LibriTTS](https://openslr.org/60/) and place it in the `data/` folder. Use our prepared metadata located in `metafiles/libritts/`. Each line in the metafile follows the format: `utterance_path|spk`.
 
 ### Tokenizer training
-We also provide [pretrained tokenizers](https://huggingface.co/ZexinCai/GenVC/blob/main/pre_trained/).
+We also provide [pretrained tokenizers](https://huggingface.co/ZexinCai/GenVC/tree/main/pre_trained).
 
 NOTE: Modify the configurations in `train_*_dvae.py` if necessary.
 ```sh
