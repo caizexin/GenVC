@@ -79,7 +79,7 @@ We evaluated the latency and real-time factor (processed time / audio length) of
 
 
 ## Training
-We highly recommend using Weights & Biases ([wandb](https://wandb.ai/site/)) to track training progress. Please refer to our training history as a reference for training your own model. 
+We highly recommend using Weights & Biases ([wandb](https://wandb.ai/site/)) to track training progress. Please refer to our [training history](https://api.wandb.ai/links/zexincai-johns-hopkins-university/0v1stvjk) as a reference for training your own model. 
 ### Dataset preparation
 Download the [LibriTTS](https://openslr.org/60/) and place it in the `data/` folder. Use our prepared metadata located in `metafiles/libritts/`. Each line in the metafile follows the format: `utterance_path|spk`.
 
