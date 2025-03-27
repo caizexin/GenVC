@@ -11,10 +11,15 @@ if __name__ == '__main__':
     parser.add_argument('--src_wav', type=str, default='samples/EF4_ENG_0112_1.wav')
     parser.add_argument('--ref_audio', type=str, default='samples/EM1_ENG_0037_1.wav')
     parser.add_argument('--output_path', type=str, default='samples/converted.wav')
+    parser.add_argument('top_k', type=int, default=15)
     parser.add_argument('--streaming', action='store_true')
     args = parser.parse_args()
 
     model, config = model_init(args.model_path, args.device)
+
+    # top_k is one of the important hyperparameters for inference, so you can tune it to get better results
+    # for streaming inference, greedy decoding is preferred, you can set top_k to 1
+    model.config.top_k = args.top_k
     src_wav = load_audio(args.src_wav, model.content_sample_rate)
     ref_audio = load_audio(args.ref_audio, model.config.audio.sample_rate)
 
