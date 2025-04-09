@@ -13,3 +13,4 @@ pre_trained/contentVec.pt
 wandb/
 pymp-*/
 tmp*/
+test/

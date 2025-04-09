@@ -26,7 +26,76 @@ def synthesize_utt(
     src_wav, 
     tgt_audio, 
     seg_len=6.0):
+    """Synthesize audio in chunks, used for non-streaming mode
+    The concatenation is performed at the latent feature level"""
+    wav_gen_prev, wav_overlap = None, None
+    total_wavlen = src_wav.shape[-1]
+    pred_audios = []
+    min_chunk_duration = 0.32 * genVC_mdl.content_sample_rate
 
+    src_wav = src_wav.to(genVC_mdl.device)
+    seg_len = int(seg_len * genVC_mdl.content_sample_rate)
+    # get the conditioning latent
+    tgt_audio = tgt_audio.to(genVC_mdl.device)
+    cond_latent = genVC_mdl.get_gpt_cond_latents(tgt_audio, genVC_mdl.config.audio.sample_rate)
+    final_latents = []
+
+    for i in range(0, total_wavlen, seg_len):
+        seg_end = i+seg_len if i+seg_len < total_wavlen else total_wavlen
+        if seg_end == total_wavlen:
+            src_wav_seg = src_wav[:, i:]
+            if src_wav_seg.shape[-1] < min_chunk_duration:
+                src_wav_seg = torch.nn.functional.pad(src_wav_seg, (0, min_chunk_duration-src_wav_seg.shape[-1]), "constant", 0)
+        else:
+            src_wav_seg = src_wav[:, i:i+seg_len]
+
+        content_feat = genVC_mdl.content_extractor.extract_content_features(src_wav_seg)
+        content_codes = genVC_mdl.content_dvae.get_codebook_indices(content_feat.transpose(1, 2))
+        
+        gen_codes = genVC_mdl.gpt.generate(
+            cond_latent,
+            content_codes,
+            do_sample=True,
+            top_p=genVC_mdl.config.top_p,
+            top_k=genVC_mdl.config.top_k,
+            temperature=genVC_mdl.config.temperature,
+            num_beams=1,
+            length_penalty=genVC_mdl.config.length_penalty,
+            repetition_penalty=genVC_mdl.config.repetition_penalty,
+            output_attentions=False,
+        )[0]
+
+        gen_codes = gen_codes[(gen_codes!=genVC_mdl.gpt.stop_audio_token).nonzero().squeeze()]
+        expected_output_len = torch.tensor([gen_codes.shape[-1] * genVC_mdl.config.model_args.gpt_code_stride_len], device=genVC_mdl.device)
+        content_len = torch.tensor([content_codes.shape[-1]], device=genVC_mdl.device)
+        acoustic_latents = genVC_mdl.gpt(content_codes,
+                                    content_len,
+                                    gen_codes.unsqueeze(0),
+                                    expected_output_len,
+                                    cond_latents=cond_latent,
+                                    return_latent=True)
+        final_latents.append(acoustic_latents)
+    
+    # concatenate the latents
+    final_latents = torch.cat(final_latents, dim=1)
+    mel_input = torch.nn.functional.interpolate(
+        final_latents.transpose(1, 2),
+        scale_factor=[genVC_mdl.hifigan_scale_factor],
+        mode="linear",
+    ).squeeze(1)
+
+    synthesized_audio = genVC_mdl.hifigan(mel_input)
+
+    return synthesized_audio[0].squeeze()
+
+@torch.inference_mode()
+def synthesize_utt_chunked(
+    genVC_mdl, 
+    src_wav, 
+    tgt_audio, 
+    seg_len=6.0):
+    """Synthesize audio in chunks, used for non-streaming mode
+    The concatenation is performed at the waveform level"""
     wav_gen_prev, wav_overlap = None, None
     total_wavlen = src_wav.shape[-1]
     pred_audios = []
