@@ -90,7 +90,7 @@ NOTE: Modify the configurations in `train_*_dvae.py` if necessary.
 ```sh
 CUDA_VISIBLE_DEVICES=0 python train_audio_dvae.py
 ```
-For phonetic tokenizer training, please download the [ContentVec](https://ibm.box.com/s/nv35hsry0v2y595etzysgnn2amsxxb0u) model and save it as pre_trained/contentVec.pt. If you’ve already downloaded the [`pre_trained`](https://huggingface.co/ZexinCai/GenVC/tree/main/pre_trained) directory from Hugging Face, no further download is necessary.
+For phonetic tokenizer training, please download the [ContentVec](https://ibm.ent.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr) model and save it as pre_trained/contentVec.pt. If you’ve already downloaded the [`pre_trained`](https://huggingface.co/ZexinCai/GenVC/tree/main/pre_trained) directory from Hugging Face, no further download is necessary.
 ```sh
 CUDA_VISIBLE_DEVICES=0 python train_content_dvae.py
 ```
