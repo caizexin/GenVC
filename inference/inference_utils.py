@@ -31,7 +31,7 @@ def synthesize_utt(
     wav_gen_prev, wav_overlap = None, None
     total_wavlen = src_wav.shape[-1]
     pred_audios = []
-    min_chunk_duration = 0.32 * genVC_mdl.content_sample_rate
+    min_chunk_duration = int(0.32 * genVC_mdl.content_sample_rate)
 
     src_wav = src_wav.to(genVC_mdl.device)
     seg_len = int(seg_len * genVC_mdl.content_sample_rate)
