@@ -24,7 +24,7 @@ def model_init(checkpoint_path, device):
     model.gpt.to(device)
     model.content_dvae.eval()
     model.content_dvae.to(device)
-    model.hifigan.cuda()
+    model.hifigan.eval()
     model.hifigan.to(device)
     model.content_extractor.model.eval()
     model.content_extractor.model.to(device)
